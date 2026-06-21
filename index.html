@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>⚡ OLEADAS DE HIERRO ⚡</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container">
+        <!-- UI flotante sobre el canvas -->
+        <div id="ui">
+            <span id="hp-bar">❤️ Vida: 100/100</span>
+            <span id="wave-counter">🔥 Oleada: 1</span>
+            <span id="coin-counter">🪙 Monedas: 0</span>
+            <span id="score-display" style="color:#ffd700; border-color:#ffd70044;">🏆 0</span>
+        </div>
+
+        <!-- Canvas -->
+        <canvas id="gameCanvas" width="800" height="450"></canvas>
+
+        <!-- Controles táctiles -->
+        <div id="mobile-controls-left" class="controls-container">
+            <button id="btn-left" class="ctrl-btn">◀</button>
+            <button id="btn-right" class="ctrl-btn">▶</button>
+        </div>
+        <div id="mobile-controls-right" class="controls-container">
+            <div class="action-grid">
+                <button id="btn-jump" class="ctrl-btn">▲ Saltar</button>
+                <button id="btn-shoot" class="ctrl-btn">🔫 Disparar</button>
+                <button id="btn-dash" class="ctrl-btn">💨 Dash</button>
+                <button id="btn-block" class="ctrl-btn">🛡️ Bloqueo</button>
+            </div>
+        </div>
+
+        <!-- Controles de teclado -->
+        <div id="keyboard-hint">
+            <span><kbd>W</kbd> Saltar</span>
+            <span><kbd>A</kbd> <kbd>D</kbd> Moverse</span>
+            <span><kbd>J</kbd> Disparar</span>
+            <span><kbd>K</kbd> Dash</span>
+            <span><kbd>L</kbd> Bloqueo</span>
+            <span><kbd>P</kbd> Pausa</span>
+        </div>
+
+        <!-- Tabla de puntuación -->
+        <div id="scoreboard-container">
+            <h3>🏆 TABLA DE PUNTUACIÓN</h3>
+            <div id="scoreboard-list"></div>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>

@@ -1,0 +1,455 @@
+/* ============================================================
+   🎮  OLEADAS DE HIERRO  -  Estilo Oscuro y Letal
+   ============================================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', 'Courier New', monospace;
+}
+
+body {
+    background: #0b0e14;
+    background-image: radial-gradient(circle at 20% 30%, #141c2a, #07090e);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 16px;
+    user-select: none;
+    overflow: hidden;
+}
+
+#game-container {
+    background: #111820;
+    padding: 20px 20px 16px;
+    border-radius: 28px;
+    box-shadow: 0 0 60px rgba(0, 180, 255, 0.08), 0 20px 60px rgba(0, 0, 0, 0.8), inset 0 0 30px rgba(0, 150, 255, 0.02);
+    border: 1px solid #1f3040;
+    max-width: 860px;
+    width: 100%;
+    position: relative;
+}
+
+#ui {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 16px 12px 16px;
+    color: #c8d6e5;
+    font-size: 17px;
+    font-weight: 800;
+    background: rgba(12, 18, 28, 0.7);
+    backdrop-filter: blur(6px);
+    border-radius: 18px 18px 0 0;
+    border-bottom: 2px solid #1e90ff;
+    text-shadow: 0 0 20px rgba(30, 144, 255, 0.15);
+    letter-spacing: 0.5px;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+#ui span {
+    background: rgba(20, 30, 44, 0.7);
+    padding: 4px 18px;
+    border-radius: 30px;
+    border: 1px solid #2a3e52;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(2px);
+    font-size: 14px;
+}
+
+#hp-bar {
+    color: #ff6b6b;
+    border-color: #ff6b6b44;
+}
+#wave-counter {
+    color: #ffd93d;
+    border-color: #ffd93d44;
+}
+#coin-counter {
+    color: #ffb347;
+    border-color: #ffb34744;
+}
+#score-display {
+    color: #ffd700;
+    border-color: #ffd70044;
+}
+
+#gameCanvas {
+    display: block;
+    margin: 0 auto;
+    background: #1a2330;
+    border-radius: 12px;
+    border: 2px solid #1f3040;
+    box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.6), 0 0 30px rgba(0, 120, 255, 0.06);
+    width: 100%;
+    height: auto;
+    aspect-ratio: 800 / 450;
+    cursor: crosshair;
+    transition: border-color 0.3s;
+}
+
+#gameCanvas:hover {
+    border-color: #2a4a6a;
+}
+
+.controls-container {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+}
+
+.ctrl-btn {
+    background: rgba(20, 30, 44, 0.8);
+    backdrop-filter: blur(6px);
+    border: 2px solid #2c4050;
+    border-radius: 14px;
+    color: #d0e0f0;
+    padding: 10px 18px;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.12s ease;
+    box-shadow: 0 4px 0 #0b1117, inset 0 0 15px rgba(0, 150, 255, 0.03);
+    min-width: 64px;
+    text-shadow: 0 0 12px rgba(0, 150, 255, 0.1);
+    touch-action: manipulation;
+    letter-spacing: 0.5px;
+}
+
+.ctrl-btn:active {
+    transform: translateY(4px);
+    box-shadow: 0 0px 0 #0b1117;
+    background: #2a3f50;
+    border-color: #4a7a9a;
+}
+
+.ctrl-btn:hover:not(:active) {
+    background: rgba(30, 50, 70, 0.9);
+    border-color: #3a6a8a;
+    box-shadow: 0 0 20px rgba(0, 150, 255, 0.15);
+}
+
+#mobile-controls-left {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+#mobile-controls-right .action-grid {
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+    gap: 8px;
+}
+
+#keyboard-hint {
+    display: flex;
+    justify-content: center;
+    gap: 18px;
+    padding: 14px 10px 6px 10px;
+    color: #4a607a;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    flex-wrap: wrap;
+    border-top: 1px solid #1a2634;
+    margin-top: 12px;
+}
+
+#keyboard-hint kbd {
+    background: #141c28;
+    color: #8ab4d6;
+    padding: 2px 12px;
+    border-radius: 6px;
+    border: 1px solid #2a4050;
+    font-size: 12px;
+    font-weight: 700;
+    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.4);
+}
+
+/* ---- Tabla de puntuación ---- */
+#scoreboard-container {
+    margin-top: 14px;
+    padding: 12px 16px;
+    background: rgba(12, 18, 28, 0.6);
+    border-radius: 14px;
+    border: 1px solid #1f3040;
+}
+
+#scoreboard-container h3 {
+    color: #ffd700;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    text-align: center;
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.15);
+    letter-spacing: 1px;
+}
+
+#scoreboard-list {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    max-height: 120px;
+    overflow-y: auto;
+}
+
+#scoreboard-list .score-entry {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 12px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.03);
+    color: #aabbcc;
+    font-size: 13px;
+    font-weight: 500;
+    transition: 0.2s;
+}
+
+#scoreboard-list .score-entry:hover {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+#scoreboard-list .score-entry .pos {
+    color: #ffd700;
+    font-weight: 700;
+    width: 30px;
+}
+
+#scoreboard-list .score-entry .name {
+    flex: 1;
+    padding-left: 8px;
+}
+
+#scoreboard-list .score-entry .score {
+    color: #44ff88;
+    font-weight: 700;
+}
+
+#scoreboard-list .score-entry .wave-info {
+    color: #88aacc;
+    font-size: 12px;
+    margin-left: 12px;
+}
+
+/* ---- Tienda overlay ---- */
+#tienda-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.92);
+    backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    border-radius: 12px;
+    color: white;
+    font-family: 'Segoe UI', monospace;
+    animation: fadeIn 0.3s ease;
+    padding: 20px;
+}
+
+#tienda-overlay h2 {
+    color: #ffd93d;
+    font-size: 32px;
+    margin-bottom: 6px;
+    text-shadow: 0 0 30px rgba(255, 217, 61, 0.2);
+}
+
+#tienda-overlay .subtitle {
+    color: #aaa;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+#tienda-overlay .tienda-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    max-width: 540px;
+    width: 100%;
+}
+
+#tienda-overlay .tienda-btn {
+    padding: 14px 12px;
+    border-radius: 14px;
+    border: 2px solid #2a4050;
+    background: rgba(20, 30, 44, 0.9);
+    color: #d0e0f0;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+    text-align: center;
+    line-height: 1.4;
+}
+
+#tienda-overlay .tienda-btn:hover:not(:disabled) {
+    border-color: #4a8aaf;
+    background: rgba(30, 50, 70, 0.95);
+    transform: scale(1.03);
+    box-shadow: 0 0 25px rgba(30, 144, 255, 0.15);
+}
+
+#tienda-overlay .tienda-btn:disabled {
+    opacity: 0.6;
+    cursor: default;
+    border-color: #44ff44;
+    background: rgba(68, 255, 68, 0.05);
+}
+
+#tienda-overlay .tienda-btn .precio {
+    font-size: 12px;
+    color: #ffb347;
+}
+
+#tienda-overlay .tienda-btn .comprado {
+    color: #44ff44;
+}
+
+#tienda-overlay .btn-continuar {
+    margin-top: 20px;
+    padding: 14px 50px;
+    background: #1e90ff;
+    border: none;
+    border-radius: 30px;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 0 30px rgba(30, 144, 255, 0.25);
+    transition: 0.2s;
+}
+
+#tienda-overlay .btn-continuar:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 40px rgba(30, 144, 255, 0.4);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* ---- Scrollbar personalizada ---- */
+#scoreboard-list::-webkit-scrollbar {
+    width: 4px;
+}
+#scoreboard-list::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+}
+#scoreboard-list::-webkit-scrollbar-thumb {
+    background: #ffd70044;
+    border-radius: 4px;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 750px) {
+    #game-container {
+        padding: 12px;
+        border-radius: 18px;
+    }
+    #ui {
+        font-size: 13px;
+        padding: 6px 10px 10px 10px;
+        flex-wrap: wrap;
+        gap: 4px;
+    }
+    #ui span {
+        padding: 2px 12px;
+        font-size: 12px;
+    }
+    .ctrl-btn {
+        padding: 8px 12px;
+        font-size: 15px;
+        min-width: 48px;
+        border-radius: 12px;
+    }
+    #mobile-controls-right .action-grid {
+        grid-template-columns: repeat(2, auto);
+        gap: 6px;
+    }
+    #keyboard-hint {
+        display: none;
+    }
+    .controls-container {
+        margin-top: 10px;
+        gap: 8px;
+    }
+    #tienda-overlay .tienda-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+    #tienda-overlay .tienda-btn {
+        padding: 10px 8px;
+        font-size: 12px;
+    }
+    #tienda-overlay h2 {
+        font-size: 24px;
+    }
+    #scoreboard-container h3 {
+        font-size: 14px;
+    }
+    #scoreboard-list .score-entry {
+        font-size: 12px;
+        padding: 3px 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .ctrl-btn {
+        padding: 6px 8px;
+        font-size: 13px;
+        min-width: 40px;
+        border-radius: 10px;
+    }
+    #ui {
+        font-size: 11px;
+        padding: 4px 6px 6px 6px;
+    }
+    #ui span {
+        padding: 2px 8px;
+        font-size: 10px;
+    }
+    #game-container {
+        padding: 8px;
+        border-radius: 14px;
+    }
+    #tienda-overlay .tienda-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 6px;
+    }
+    #tienda-overlay .tienda-btn {
+        padding: 8px 6px;
+        font-size: 11px;
+        border-radius: 10px;
+    }
+    #tienda-overlay .btn-continuar {
+        padding: 10px 30px;
+        font-size: 15px;
+    }
+    #scoreboard-list .score-entry {
+        font-size: 11px;
+        padding: 2px 6px;
+    }
+    #scoreboard-list .score-entry .wave-info {
+        font-size: 10px;
+        margin-left: 6px;
+    }
+}
