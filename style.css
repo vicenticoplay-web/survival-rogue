@@ -229,7 +229,29 @@ body {
 #tienda-overlay .subtitle {
     color: #aaa;
     font-size: 16px;
-    margin-bottom: 20px;
+    margin-bottom: 12px;
+}
+
+#tienda-overlay .btn-continuar {
+    margin-top: 0 !important;
+    margin-bottom: 16px !important;
+    padding: 12px 40px;
+    background: #1e90ff;
+    border: none;
+    border-radius: 30px;
+    color: white;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 0 30px rgba(30, 144, 255, 0.25);
+    transition: 0.2s;
+    width: auto;
+    min-width: 200px;
+}
+
+#tienda-overlay .btn-continuar:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 40px rgba(30, 144, 255, 0.4);
 }
 
 #tienda-overlay .tienda-grid {
@@ -275,25 +297,6 @@ body {
 
 #tienda-overlay .tienda-btn .comprado {
     color: #44ff44;
-}
-
-#tienda-overlay .btn-continuar {
-    margin-top: 20px;
-    padding: 14px 50px;
-    background: #1e90ff;
-    border: none;
-    border-radius: 30px;
-    color: white;
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-    box-shadow: 0 0 30px rgba(30, 144, 255, 0.25);
-    transition: 0.2s;
-}
-
-#tienda-overlay .btn-continuar:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 40px rgba(30, 144, 255, 0.4);
 }
 
 @keyframes fadeIn {
@@ -449,6 +452,24 @@ body {
         font-size: 11px !important;
         padding: 2px 8px !important;
     }
+
+    #tienda-overlay h2 {
+        font-size: 24px !important;
+    }
+    #tienda-overlay .tienda-grid {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 8px !important;
+    }
+    #tienda-overlay .tienda-btn {
+        padding: 10px 8px !important;
+        font-size: 12px !important;
+    }
+    #tienda-overlay .btn-continuar {
+        padding: 10px 30px !important;
+        font-size: 15px !important;
+        min-width: 150px !important;
+        margin-bottom: 12px !important;
+    }
 }
 
 @media (max-width: 900px) and (orientation: landscape) {
@@ -529,8 +550,9 @@ body {
         font-size: 11px;
     }
     #tienda-overlay .btn-continuar {
-        padding: 10px 30px;
-        font-size: 15px;
+        padding: 8px 20px !important;
+        font-size: 13px !important;
+        min-width: 120px !important;
     }
     #scoreboard-list .score-entry {
         font-size: 11px;
