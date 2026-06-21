@@ -1,5 +1,5 @@
 /* ============================================================
-   🎮  OLEADAS DE HIERRO  -  Estilo Oscuro y Letal
+   🎮  OLEADAS DE HIERRO  -  Estilo Completo
    ============================================================ */
 
 * {
@@ -96,57 +96,6 @@ body {
     border-color: #2a4a6a;
 }
 
-.controls-container {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    margin-top: 16px;
-    flex-wrap: wrap;
-}
-
-.ctrl-btn {
-    background: rgba(20, 30, 44, 0.8);
-    backdrop-filter: blur(6px);
-    border: 2px solid #2c4050;
-    border-radius: 14px;
-    color: #d0e0f0;
-    padding: 10px 18px;
-    font-size: 18px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: 0.12s ease;
-    box-shadow: 0 4px 0 #0b1117, inset 0 0 15px rgba(0, 150, 255, 0.03);
-    min-width: 64px;
-    text-shadow: 0 0 12px rgba(0, 150, 255, 0.1);
-    touch-action: manipulation;
-    letter-spacing: 0.5px;
-}
-
-.ctrl-btn:active {
-    transform: translateY(4px);
-    box-shadow: 0 0px 0 #0b1117;
-    background: #2a3f50;
-    border-color: #4a7a9a;
-}
-
-.ctrl-btn:hover:not(:active) {
-    background: rgba(30, 50, 70, 0.9);
-    border-color: #3a6a8a;
-    box-shadow: 0 0 20px rgba(0, 150, 255, 0.15);
-}
-
-#mobile-controls-left {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-}
-
-#mobile-controls-right .action-grid {
-    display: grid;
-    grid-template-columns: repeat(4, auto);
-    gap: 8px;
-}
-
 #keyboard-hint {
     display: flex;
     justify-content: center;
@@ -235,6 +184,18 @@ body {
     color: #88aacc;
     font-size: 12px;
     margin-left: 12px;
+}
+
+#scoreboard-list::-webkit-scrollbar {
+    width: 4px;
+}
+#scoreboard-list::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+}
+#scoreboard-list::-webkit-scrollbar-thumb {
+    background: #ffd70044;
+    border-radius: 4px;
 }
 
 /* ---- Tienda overlay ---- */
@@ -346,20 +307,178 @@ body {
     }
 }
 
-/* ---- Scrollbar personalizada ---- */
-#scoreboard-list::-webkit-scrollbar {
-    width: 4px;
-}
-#scoreboard-list::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 4px;
-}
-#scoreboard-list::-webkit-scrollbar-thumb {
-    background: #ffd70044;
-    border-radius: 4px;
+/* ============================================================
+   📱 CONTROLES MÓVIL (SOLO EN TELÉFONOS)
+   ============================================================ */
+
+.mobile-controls {
+    display: none;
 }
 
-/* ---- Responsive ---- */
+@media (max-width: 768px) and (orientation: portrait) {
+    .mobile-controls {
+        display: flex !important;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 200px;
+        background: rgba(0, 0, 0, 0.65);
+        backdrop-filter: blur(8px);
+        border-top: 2px solid rgba(255, 255, 255, 0.1);
+        z-index: 1000;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 20px;
+        touch-action: none;
+        user-select: none;
+    }
+
+    .control-group-left,
+    .control-group-right {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+    }
+
+    .control-group-left {
+        flex: 1;
+        justify-content: flex-start;
+        gap: 20px;
+    }
+
+    .control-group-right {
+        flex: 1;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .mobile-controls .ctrl-btn {
+        width: 68px;
+        height: 68px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.12);
+        border: 2px solid rgba(255, 255, 255, 0.25);
+        color: white;
+        font-size: 24px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: 0.1s;
+        backdrop-filter: blur(4px);
+        touch-action: manipulation;
+        box-shadow: 0 4px 0 rgba(0, 0, 0, 0.3);
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        padding: 0;
+        min-width: auto;
+    }
+
+    .mobile-controls .ctrl-btn:active {
+        transform: scale(0.85);
+        background: rgba(255, 255, 255, 0.25);
+        border-color: #00aaff;
+        box-shadow: 0 0 20px rgba(0, 170, 255, 0.3);
+    }
+
+    .control-group-left .ctrl-btn {
+        width: 80px;
+        height: 80px;
+        font-size: 32px;
+        background: rgba(0, 150, 255, 0.15);
+        border-color: rgba(0, 150, 255, 0.3);
+    }
+
+    .control-group-left .ctrl-btn:active {
+        background: rgba(0, 150, 255, 0.35);
+        border-color: #00aaff;
+    }
+
+    .control-group-right .ctrl-btn:nth-child(1) {
+        background: rgba(46, 204, 113, 0.2);
+        border-color: rgba(46, 204, 113, 0.4);
+    }
+    .control-group-right .ctrl-btn:nth-child(2) {
+        background: rgba(231, 76, 60, 0.2);
+        border-color: rgba(231, 76, 60, 0.4);
+    }
+    .control-group-right .ctrl-btn:nth-child(3) {
+        background: rgba(241, 196, 15, 0.2);
+        border-color: rgba(241, 196, 15, 0.4);
+    }
+    .control-group-right .ctrl-btn:nth-child(4) {
+        background: rgba(52, 152, 219, 0.2);
+        border-color: rgba(52, 152, 219, 0.4);
+    }
+
+    #game-container {
+        padding-bottom: 210px !important;
+        min-height: 100vh;
+    }
+
+    #gameCanvas {
+        height: auto !important;
+        width: 100% !important;
+        aspect-ratio: 16/9 !important;
+    }
+
+    #keyboard-hint {
+        display: none !important;
+    }
+
+    #ui {
+        font-size: 14px !important;
+        flex-wrap: wrap !important;
+        gap: 4px !important;
+    }
+
+    #ui span {
+        font-size: 12px !important;
+        padding: 2px 10px !important;
+    }
+
+    #scoreboard-container {
+        margin-bottom: 200px !important;
+        font-size: 12px !important;
+        padding: 8px 12px !important;
+    }
+
+    #scoreboard-list .score-entry {
+        font-size: 11px !important;
+        padding: 2px 8px !important;
+    }
+}
+
+@media (max-width: 900px) and (orientation: landscape) {
+    .mobile-controls {
+        height: 140px !important;
+        padding: 6px 12px !important;
+    }
+
+    .mobile-controls .ctrl-btn {
+        width: 52px !important;
+        height: 52px !important;
+        font-size: 18px !important;
+    }
+
+    .control-group-left .ctrl-btn {
+        width: 62px !important;
+        height: 62px !important;
+        font-size: 24px !important;
+    }
+
+    #game-container {
+        padding-bottom: 150px !important;
+    }
+
+    #scoreboard-container {
+        margin-bottom: 150px !important;
+    }
+}
+
+/* ---- Responsive general ---- */
 @media (max-width: 750px) {
     #game-container {
         padding: 12px;
@@ -368,29 +487,13 @@ body {
     #ui {
         font-size: 13px;
         padding: 6px 10px 10px 10px;
-        flex-wrap: wrap;
-        gap: 4px;
     }
     #ui span {
         padding: 2px 12px;
         font-size: 12px;
     }
-    .ctrl-btn {
-        padding: 8px 12px;
-        font-size: 15px;
-        min-width: 48px;
-        border-radius: 12px;
-    }
-    #mobile-controls-right .action-grid {
-        grid-template-columns: repeat(2, auto);
-        gap: 6px;
-    }
     #keyboard-hint {
         display: none;
-    }
-    .controls-container {
-        margin-top: 10px;
-        gap: 8px;
     }
     #tienda-overlay .tienda-grid {
         grid-template-columns: 1fr 1fr;
@@ -403,22 +506,9 @@ body {
     #tienda-overlay h2 {
         font-size: 24px;
     }
-    #scoreboard-container h3 {
-        font-size: 14px;
-    }
-    #scoreboard-list .score-entry {
-        font-size: 12px;
-        padding: 3px 8px;
-    }
 }
 
 @media (max-width: 480px) {
-    .ctrl-btn {
-        padding: 6px 8px;
-        font-size: 13px;
-        min-width: 40px;
-        border-radius: 10px;
-    }
     #ui {
         font-size: 11px;
         padding: 4px 6px 6px 6px;
@@ -432,13 +522,11 @@ body {
         border-radius: 14px;
     }
     #tienda-overlay .tienda-grid {
-        grid-template-columns: 1fr 1fr;
         gap: 6px;
     }
     #tienda-overlay .tienda-btn {
         padding: 8px 6px;
         font-size: 11px;
-        border-radius: 10px;
     }
     #tienda-overlay .btn-continuar {
         padding: 10px 30px;
