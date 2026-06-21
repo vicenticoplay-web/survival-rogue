@@ -19,13 +19,16 @@
         <!-- Canvas -->
         <canvas id="gameCanvas" width="800" height="450"></canvas>
 
-        <!-- Controles táctiles -->
-        <div id="mobile-controls-left" class="controls-container">
-            <button id="btn-left" class="ctrl-btn">◀</button>
-            <button id="btn-right" class="ctrl-btn">▶</button>
-        </div>
-        <div id="mobile-controls-right" class="controls-container">
-            <div class="action-grid">
+        <!-- Controles táctiles SOLO PARA MÓVIL -->
+        <div id="mobile-controls" class="mobile-controls">
+            <!-- Lado izquierdo: Movimiento -->
+            <div class="control-group-left">
+                <button id="btn-left" class="ctrl-btn">◀</button>
+                <button id="btn-right" class="ctrl-btn">▶</button>
+            </div>
+            
+            <!-- Lado derecho: Acciones -->
+            <div class="control-group-right">
                 <button id="btn-jump" class="ctrl-btn">▲ Saltar</button>
                 <button id="btn-shoot" class="ctrl-btn">🔫 Disparar</button>
                 <button id="btn-dash" class="ctrl-btn">💨 Dash</button>
@@ -33,7 +36,7 @@
             </div>
         </div>
 
-        <!-- Controles de teclado -->
+        <!-- Controles de teclado (solo escritorio) -->
         <div id="keyboard-hint">
             <span><kbd>W</kbd> Saltar</span>
             <span><kbd>A</kbd> <kbd>D</kbd> Moverse</span>
