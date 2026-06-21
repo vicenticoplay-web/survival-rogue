@@ -714,7 +714,7 @@ class Enemy {
 const jugador = new Player();
 
 // ============================================================
-// 🏪 TIENDA DE MEJORAS
+// 🏪 TIENDA DE MEJORAS (con botón CONTINUAR arriba)
 // ============================================================
 function mostrarTienda() {
     enTienda = true;
@@ -725,10 +725,10 @@ function mostrarTienda() {
     tiendaDiv.innerHTML = `
         <h2>🏪 TIENDA</h2>
         <p class="subtitle">Oleada ${oleadaActual} | 🪙 ${monedas} monedas</p>
+        <button class="btn-continuar" onclick="cerrarTienda()">➡️ CONTINUAR</button>
         <div class="tienda-grid">
             ${generarBotonesTienda()}
         </div>
-        <button class="btn-continuar" onclick="cerrarTienda()">➡️ CONTINUAR</button>
     `;
 
     document.getElementById('game-container').appendChild(tiendaDiv);
@@ -816,15 +816,16 @@ function comprarMejora(id) {
     }
 
     actualizarUI();
+    // Refrescar la tienda
     const tiendaDiv = document.getElementById('tienda-overlay');
     if (tiendaDiv) {
         tiendaDiv.innerHTML = `
             <h2>🏪 TIENDA</h2>
             <p class="subtitle">Oleada ${oleadaActual} | 🪙 ${monedas} monedas</p>
+            <button class="btn-continuar" onclick="cerrarTienda()">➡️ CONTINUAR</button>
             <div class="tienda-grid">
                 ${generarBotonesTienda()}
             </div>
-            <button class="btn-continuar" onclick="cerrarTienda()">➡️ CONTINUAR</button>
         `;
     }
 }
