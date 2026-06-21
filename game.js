@@ -40,7 +40,7 @@ let mejoras = {
     disparoArea: false,
     velocidad: false,
     vidaExtra: false,
-    danoExtra: false
+    danoExtra: 0
 };
 
 // ---- Tabla de puntuación ----
@@ -58,7 +58,7 @@ const teclas = {
 };
 
 // ============================================================
-// 🧑 CLASE JUGADOR 
+// 🧑 CLASE JUGADOR
 // ============================================================
 class Player {
     constructor() {
@@ -218,7 +218,6 @@ class Player {
     disparar() {
         if (this.shootCooldown > 0 || this.isBlocking) return;
         const dir = this.mirandoDerecha ? 1 : -1;
-        // ---- DAÑO: base 25----
         const danoBase = 25 + this.danoExtra;
 
         if (this.disparoAreaActivo) {
@@ -231,7 +230,7 @@ class Player {
                     velX: 12 * dir,
                     velY: i * 1.5,
                     color: '#ff00aa',
-                    damage: danoBase * 0.65 // Nerf: 65% del daño base
+                    damage: danoBase * 0.65
                 });
             }
         } else {
@@ -251,7 +250,7 @@ class Player {
 }
 
 // ============================================================
-// 👾 CLASE ENEMIGO (con escalado hasta oleada 100)
+// 👾 CLASE ENEMIGO
 // ============================================================
 class Enemy {
     constructor(x, y, tipo, flanco = 'normal') {
@@ -270,8 +269,7 @@ class Enemy {
         this.alturaVuelo = 0;
         this.oscilarTimer = 0;
 
-        // ---- Escalado de stats según oleada (con tope suave) ----
-        const factorEscalado = Math.min(oleadaActual, 100) / 10; // Crece hasta oleada 100
+        const factorEscalado = Math.min(oleadaActual, 100) / 10;
         const multVida = 1 + factorEscalado * 0.6;
         const multVel = 1 + factorEscalado * 0.08;
         const multDano = 1 + factorEscalado * 0.4;
@@ -349,7 +347,7 @@ class Enemy {
                 this.recompensa = 50;
                 this.emoji = '👑';
                 break;
-            default: // normal
+            default:
                 this.width = 30;
                 this.height = 50;
                 this.color = '#9b59b6';
@@ -362,7 +360,6 @@ class Enemy {
                 break;
         }
 
-        // ---- Topes suaves para que no sea imposible ----
         this.hp = Math.min(this.hp, 2500);
         this.speed = Math.min(this.speed, 12);
         this.damage = Math.min(this.damage, 120);
@@ -521,6 +518,7 @@ class Enemy {
             w = this.width,
             h = this.height;
 
+        // ---- Diseños ----
         if (this.esVolador) {
             ctx.beginPath();
             ctx.moveTo(x + w / 2, y);
@@ -716,7 +714,7 @@ class Enemy {
 const jugador = new Player();
 
 // ============================================================
-// 🏪 TIENDA DE MEJORAS (con daño nerfeado)
+// 🏪 TIENDA DE MEJORAS
 // ============================================================
 function mostrarTienda() {
     enTienda = true;
@@ -742,20 +740,18 @@ function generarBotonesTienda() {
         { id: 'disparoArea', nombre: '💥 Disparo en Área', precio: 40, comprado: jugador.disparoAreaActivo },
         { id: 'velocidad', nombre: '💨 +Velocidad', precio: 25, comprado: mejoras.velocidad },
         { id: 'vidaExtra', nombre: '❤️ +25 Vida Max', precio: 35, comprado: mejoras.vidaExtra },
-        { id: 'danoExtra', nombre: '⚔️ +5 Daño (máx. 3 veces)', precio: 30, comprado: mejoras.danoExtra },
+        { id: 'danoExtra', nombre: '⚔️ +5 Daño (máx. 3 veces)', precio: 30, comprado: mejoras.danoExtra >= 3 },
         { id: 'curar', nombre: '🩹 Curar 50 HP', precio: 20, comprado: false },
     ];
 
     return items.map(item => {
-        // Límite de 3 compras para daño extra
         if (item.id === 'danoExtra') {
-            const comprado = mejoras.danoExtra;
-            const maxCompras = 3;
-            const texto = comprado >= maxCompras ? '✅ MAX' : `🪙 ${item.precio}`;
+            const comprado = mejoras.danoExtra >= 3;
+            const texto = comprado ? '✅ MÁXIMO' : `🪙 ${item.precio}`;
             return `
-                <button class="tienda-btn" onclick="comprarMejora('${item.id}')" ${comprado >= maxCompras ? 'disabled' : ''}>
-                    ${item.nombre} (${comprado}/${maxCompras})<br>
-                    <span class="${comprado >= maxCompras ? 'comprado' : 'precio'}">${comprado >= maxCompras ? '✅ MÁXIMO' : '🪙 ' + item.precio}</span>
+                <button class="tienda-btn" onclick="comprarMejora('${item.id}')" ${comprado ? 'disabled' : ''}>
+                    ${item.nombre} (${mejoras.danoExtra}/3)<br>
+                    <span class="${comprado ? 'comprado' : 'precio'}">${texto}</span>
                 </button>
             `;
         }
@@ -808,10 +804,9 @@ function comprarMejora(id) {
             monedas -= precios[id];
             break;
         case 'danoExtra':
-            // Límite de 3 compras
             if (mejoras.danoExtra >= 3) return;
-            jugador.danoExtra += 5; // Nerf: 5 en lugar de 10
-            mejoras.danoExtra = (mejoras.danoExtra || 0) + 1;
+            jugador.danoExtra += 5;
+            mejoras.danoExtra++;
             monedas -= precios[id];
             break;
         case 'curar':
@@ -845,20 +840,17 @@ window.comprarMejora = comprarMejora;
 window.cerrarTienda = cerrarTienda;
 
 // ============================================================
-// 🎮 SISTEMA DE OLEADAS (hasta 100)
+// 🎮 SISTEMA DE OLEADAS
 // ============================================================
 function iniciarOleada() {
-    // Tienda cada 3 oleadas hasta la 15
     if (oleadaActual > 1 && oleadaActual <= MAX_OLEADA_TIENDA &&
         oleadaActual % OLEADAS_PARA_TIENDA === 0 && !enTienda) {
         mostrarTienda();
         return;
     }
 
-    // ---- Escalado de enemigos hasta oleada 100 ----
     let baseEnemigos = 3 + Math.floor(oleadaActual * 1.5);
-    
-    // Ajustes por tramos de oleadas
+
     if (oleadaActual <= 20) {
         baseEnemigos = 3 + Math.floor(oleadaActual * 1.6);
     } else if (oleadaActual <= 40) {
@@ -871,13 +863,9 @@ function iniciarOleada() {
         baseEnemigos = 58 + Math.floor((oleadaActual - 80) * 0.25);
     }
 
-    // Tope máximo de enemigos por oleada (para no colapsar)
     enemigosTotalOla = Math.min(baseEnemigos, 120);
-
     enemigosPorGenerar = enemigosTotalOla;
     enemigosEliminados = 0;
-
-    // Ataque desde flancos a partir de oleada 6, cada 2 oleadas
     ataqueFlanco = (oleadaActual >= 6 && oleadaActual % 2 === 0);
 }
 
@@ -886,7 +874,6 @@ function gestionarOleadas() {
 
     if (enemigosPorGenerar > 0) {
         timerGeneracion++;
-        // Delay de spawn cada vez más corto, con tope mínimo
         let delay = Math.max(6, 70 - oleadaActual * 2);
         if (oleadaActual > 30) delay = Math.max(4, 30 - oleadaActual * 0.8);
         if (oleadaActual > 60) delay = Math.max(3, 15 - oleadaActual * 0.4);
@@ -905,7 +892,6 @@ function gestionarOleadas() {
         }
     } else if (enemigos.length === 0 && enemigosEliminados === enemigosTotalOla) {
         oleadaActual++;
-        // Bonus de monedas escalado
         monedas += Math.floor(oleadaActual * 2.5);
         puntuacionTotal += Math.floor(oleadaActual * 12);
         iniciarOleada();
@@ -918,7 +904,6 @@ function generarEnemigo(flancoAlternativo = false) {
     const rand = Math.random();
     const ola = oleadaActual;
 
-    // ---- Distribución de tipos según oleada ----
     if (ola >= 25) {
         if (rand < 0.07) tipo = 'jefe';
         else if (rand < 0.16) tipo = 'volador';
@@ -1076,7 +1061,6 @@ function mostrarGameOver() {
         `🔥 Oleada: ${oleadaActual}\n` +
         `🪙 Monedas: ${monedas}\n` +
         `🏆 Puntuación: ${puntuacionTotal}\n\n` +
-        `🏆 RÉCORDS GUARDADOS\n` +
         `🔄 ¿Reiniciar?`;
 
     setTimeout(() => {
@@ -1301,7 +1285,6 @@ function gameLoop() {
             ctx.fillText('⚔️ FLANCO ⚔️', W / 2, 14);
         }
 
-        // Advertencia de oleada alta
         if (oleadaActual > 50) {
             ctx.fillStyle = `rgba(255,0,0,${Math.min(0.3, (oleadaActual - 50) / 150)})`;
             ctx.fillRect(0, 0, W, H);
